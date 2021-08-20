@@ -8,6 +8,7 @@ import "./null_styles.css";
 import "./App.css";
 
 export default function App() {
+  let [ids, setIds] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let [arr, setArr] = useState([]);
 
@@ -36,11 +37,11 @@ export default function App() {
       <main>
         <Switch>
           <Route path="/favorites">
-            <div>favorites</div>
+            <HomeCont setIds={setIds} arr={ids} />
           </Route>
           <Route path="/">
             <Search setArr={setArr} />
-            <HomeCont arr={arr} />
+            <HomeCont setIds={setIds} arr={arr} />
             <PrevNextButtons
               currentPage={currentPage}
               handleIncreese={handleIncreese}
