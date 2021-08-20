@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
+import Search from "./components/search";
 import HomeCont from "./components/homeCont";
 import PrevNextButtons from "./components/prevNextButtons";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -17,7 +18,6 @@ export default function App() {
       );
       let json = await req.json();
       setArr(json);
-      console.log(json[0]);
     }
     getBeer();
   }, [currentPage]);
@@ -39,6 +39,7 @@ export default function App() {
             <div>favorites</div>
           </Route>
           <Route path="/">
+            <Search setArr={setArr} />
             <HomeCont arr={arr} />
             <PrevNextButtons
               currentPage={currentPage}

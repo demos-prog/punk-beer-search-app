@@ -115,3 +115,19 @@
 #pg {
   font-size: 30px;
 }
+
+#search{
+  display: flex;
+  justify-content: center;
+}
+
+#search input {
+  padding: 3px 6px;
+  border: 1px solid #000;
+}
+
+#search button{
+  padding: 5px;
+  color: #fff;
+  background-color: #00d1b2;
+}
