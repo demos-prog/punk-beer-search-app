@@ -41,6 +41,15 @@ export default function App() {
           </Route>
           <Route path="/">
             <Search setArr={setArr} />
+            <div id="apiLink">
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://punkapi.com/documentation/v2"
+              >
+                API LINK
+              </a>
+            </div>
             <HomeCont setIds={setIds} arr={arr} />
             <PrevNextButtons
               currentPage={currentPage}

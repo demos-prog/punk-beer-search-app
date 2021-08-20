@@ -1,37 +1,56 @@
 import { nanoid } from "nanoid";
 import "../App.css";
 
-export default function HomeCont(props) {
-  let set = new Set();
+let set = new Set();
 
+export default function HomeCont(props) {
   async function getIds(url) {
     let req = await fetch(url);
     let json = await req.json();
-    console.log(json);
-    props.setIds(json);
+    return json;
   }
 
-  function handleAddId(id) {
-    set.add(id);
+  function buildItems() {
     let url = "https://api.punkapi.com/v2/beers?ids=";
     for (const value of set) {
       url += value + "|";
     }
-    getIds(url);
+    getIds(url).then((json) => props.setIds(json));
+  }
+
+  function handleRemove(id) {
+    set.delete(id);
+    buildItems();
+  }
+
+  function handleAddId(id) {
+    set.add(id);
+    buildItems();
   }
 
   let list = props.arr.map((item, ind) => {
     return (
       <div className="item" key={nanoid()}>
         <div className="item__favor_wrapper">
-          <button
-            onClick={() => {
-              handleAddId(item.id);
-            }}
-            className="item__favor"
-          >
-            Add to favor
-          </button>
+          {set.has(item.id) ? (
+            <button
+              onClick={() => {
+                handleRemove(item.id);
+              }}
+              className="item__favor remove__btn"
+            >
+              Remove from favor
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                handleAddId(item.id);
+              }}
+              className="item__favor"
+            >
+              Add to favor
+            </button>
+          )}
         </div>
         <div className="item__content">
           <div className="item__image">
