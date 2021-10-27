@@ -58,7 +58,9 @@ export default function App() {
       <main>
         <Switch>
           <Route path="/favorites">
-            <HomeCont setIds={setIds} arr={ids} />
+            <Suspense fallback={Loader}>
+              <HomeCont setIds={setIds} arr={ids} />
+            </Suspense>
           </Route>
           <Route path="/">
             <Search setArr={setArr} />
