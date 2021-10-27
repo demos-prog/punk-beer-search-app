@@ -145,3 +145,9 @@
   justify-content: center;
   margin: 10px;
 }
+
+.loaderWrap{
+  display: flex;
+  justify-content: center;
+  margin: 50px auto;
+}

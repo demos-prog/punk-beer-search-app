@@ -1,27 +1,48 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
+import loadImg from "./components/images/Spin-1s-200px.svg";
 import Header from "./components/Header";
 import Search from "./components/search";
-import HomeCont from "./components/homeCont";
 import PrevNextButtons from "./components/prevNextButtons";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./null_styles.css";
 import "./App.css";
+
+const HomeCont = React.lazy(() => import("./components/homeCont"));
 
 export default function App() {
   let [ids, setIds] = useState([]);
   let [currentPage, setCurrentPage] = useState(1);
   let [arr, setArr] = useState([]);
 
+  const Link = (
+    <div id="apiLink">
+      <a
+        target="_blank"
+        rel="noreferrer"
+        href="https://punkapi.com/documentation/v2"
+      >
+        API LINK
+      </a>
+    </div>
+  );
+
+  const Loader = (
+    <div className="loaderWrap">
+      <img src={loadImg} alt="Loading..."></img>
+    </div>
+  );
+
+  async function getBeer() {
+    let req = await fetch(
+      `https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=6`
+    );
+    let json = await req.json();
+    setArr(json);
+  }
+
   useEffect(() => {
-    async function getBeer() {
-      let req = await fetch(
-        `https://api.punkapi.com/v2/beers?page=${currentPage}&per_page=6`
-      );
-      let json = await req.json();
-      setArr(json);
-    }
     getBeer();
-  }, [currentPage]);
+  }, [currentPage]); //eslint-disable-line
 
   function handleIncreese() {
     setCurrentPage((prev) => prev + 1);
@@ -41,16 +62,10 @@ export default function App() {
           </Route>
           <Route path="/">
             <Search setArr={setArr} />
-            <div id="apiLink">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://punkapi.com/documentation/v2"
-              >
-                API LINK
-              </a>
-            </div>
-            <HomeCont setIds={setIds} arr={arr} />
+            {Link}
+            <Suspense fallback={Loader}>
+              <HomeCont setIds={setIds} arr={arr} />
+            </Suspense>
             <PrevNextButtons
               currentPage={currentPage}
               handleIncreese={handleIncreese}
